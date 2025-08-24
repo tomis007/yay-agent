@@ -53,13 +53,20 @@ func (a *YAYAgent) yayAgentStatusExtension() ([]byte, error) {
 	y := yubikeyreader.YubikeyReader{}
 	defer y.Close()
 	var msg string
+	for serial, lock := range a.locks {
+		if lock.Load() {
+			msg += fmt.Sprintf("PIN (serial:%d) Unlocked\n", serial)
+		} else {
+			msg += fmt.Sprintf("PIN (serial:%d) Locked\n", serial)
+		}
+	}
 	if version, tries, serial, err := y.PIVInfo(0); err == nil {
 		msg += fmt.Sprintf("Serial: %d\nVersion: %s\nPIN Tries Remaining: %d\n", serial, version, tries)
 	} else {
 		log.Warn().Msg(err.Error())
 	}
-	for serial, lock := range a.locks {
-		msg += fmt.Sprintf("yubikey (%d): %t\n", serial, lock.Load())
+	if len(a.locks) == 0 {
+		msg += "No Yubikey connected\nNo PINS cached\n"
 	}
 	return []byte(msg), nil
 }
