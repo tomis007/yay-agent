@@ -208,7 +208,7 @@ USAGE:
    yay-agent [global options] [command [command options]]
 
 VERSION:
-   1.0.0
+   0.4.0
 
 COMMANDS:
    bind          start the agent listening on a UNIX-domain socket
@@ -231,7 +231,7 @@ USAGE:
    yay-util [global options] [command [command options]]
 
 VERSION:
-   1.0.0
+   0.4.0
 
 COMMANDS:
    config   checks status of yubikey PIN and Management Key. Will help configure and change PIN, PUK, and Management Key
